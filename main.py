@@ -15,19 +15,24 @@ def _read_manifest() -> dict:
 
 
 def cdktf_graph(manifest: dict):
-    graph = pydot.Dot("cdktf", graph_type="graph", bgcolor="white")
-    for stack_name, stack_config in manifest.items():
-
+    graph = pydot.Dot()
+    root = ""
+    node_edge = pydot.Edge()
+    for i, (stack_name, stack_config) in enumerate(manifest.items()):
+        if i == 0:
+            root = stack_name
+            graph = pydot.Dot(stack_name, graph_type="graph", bgcolor="white")
         # Add nodes
-        graph.add_node(pydot.Node(name=stack_name, shape="circle"))
-
-        dependencies = stack_config['dependencies']
-        if dependencies:
-            for dependency in dependencies:
-                node_edge = pydot.Edge(stack_name, dependency, color="blue")
         else:
-            node_edge = pydot.Edge("cdktf", stack_name, color="blue")
-        graph.add_edge(node_edge)
+            graph.add_node(pydot.Node(name=stack_name, shape="circle"))
+
+            dependencies = stack_config['dependencies']
+            if dependencies:
+                for dependency in dependencies:
+                    node_edge = pydot.Edge(stack_name, dependency, color="blue")
+            else:
+                node_edge = pydot.Edge(root, stack_name, color="blue")
+            graph.add_edge(node_edge)
 
     # Or, save it as a DOT-file:
     graph.write_dot("output_graphviz.dot")
