@@ -1,0 +1,14 @@
+[tool.poetry]
+name = "cdktf-graph"
+version = "0.1.0"
+description = ""
+authors = ["Johan Steenhoven <1254233+sbkg0002@users.noreply.github.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
